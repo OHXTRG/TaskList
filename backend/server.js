@@ -3,6 +3,7 @@ import app from "./app.js";
 import dotenv from "dotenv";
 import path from "path";
 import { connectMongo } from "./db/db.js";
+import { checkDbConnection } from "./db/postgresDB.js";
 dotenv.config({
   path: path.resolve(import.meta.dirname, `.env.${process.env.NODE_ENV}`),
 });
@@ -12,8 +13,9 @@ const port = process.env.PORT || 5000;
 
 const start = async () => {
   try {
-    await connectMongo(process.env.MONGO_URL);
-    console.log("mongodb is connected");
+    // await connectMongo(process.env.MONGO_URL);
+    await checkDbConnection();
+    console.log("postgress is connected");
     server.listen(port, () => console.log(`Server is running on port ${port}`));
   } catch (error) {
     console.log("error while running server ", error);

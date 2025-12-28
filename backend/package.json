@@ -9,13 +9,16 @@
   "scripts": {
     "test": "node server.js",
     "dev": "cross-env NODE_ENV=development  nodemon server.js",
-    "prod": "cross-env NODE_ENV=production  node server.js"
+    "prod": "cross-env NODE_ENV=production  node server.js",
+    "db:migrate:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- prisma migrate dev"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.1",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mongoose": "^9.0.0",
     "multer": "^2.0.2",
+    "prisma": "^6.19.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
