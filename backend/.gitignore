@@ -4,7 +4,7 @@ uploads/*
 # client
 client/*
 
-package-lock.json
+
 
 # Logs
 logs/*

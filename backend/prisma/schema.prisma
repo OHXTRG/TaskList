@@ -13,3 +13,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Users {
+  id             String    @id @default(uuid()) @db.Uuid
+  username       String
+  email          String
+  password       String
+  passResetToken String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime? @updatedAt
+
+  tasks Tasks[]
+}
+
+model Tasks {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+
+  title         String
+  description   String
+  estimatedTime Int
+  isStarted     Boolean    @default(false)
+  isCompleted   Boolean    @default(false)
+  inProgress    Boolean    @default(false)
+  isPaused      Boolean    @default(false)
+  actualTime    Int?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime?  @updatedAt
+  user          Users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subTasks      SubTasks[]
+}
+
+model SubTasks {
+  id            String        @id @default(uuid()) @db.Uuid
+  parentId      String        @db.Uuid
+  title         String
+  description   String
+  estimatedTime Int
+  isStarted     Boolean       @default(false)
+  isCompleted   Boolean       @default(false)
+  inProgress    Boolean       @default(false)
+  isPaused      Boolean       @default(false)
+  actualTime    Int?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime?     @updatedAt
+  ParentTask    Tasks         @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  subSubTasks   SubSubTasks[]
+}
+
+model SubSubTasks {
+  id            String    @id @default(uuid()) @db.Uuid
+  parentId      String    @db.Uuid
+  title         String
+  description   String
+  estimatedTime Int
+  isStarted     Boolean   @default(false)
+  isCompleted   Boolean   @default(false)
+  inProgress    Boolean   @default(false)
+  isPaused      Boolean   @default(false)
+  actualTime    Int?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @updatedAt
+  ParentTask    SubTasks  @relation(fields: [parentId], references: [id], onDelete: Cascade)
+}
